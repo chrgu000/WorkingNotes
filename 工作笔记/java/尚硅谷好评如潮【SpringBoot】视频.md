@@ -219,3 +219,63 @@ Spring Boot:底层是Spring框架，Spring框架默认是JCL
 
 ​	SpringBoot选用SLF4j和logback; 
 
+## 2、SLF4J使用
+
+### 1、如何在系统中使用slf4J
+
+在以后开发关于是指记录的调用，应该直接调用日志抽象层里面的方法，而不是直接调用日志的实现类。
+
+在系统面导入slf4j的JAR包和logback的实现JAR。
+
+每个日志的实现框架都有自己的配置文件。**使用slfj以后，配置文件还是做成日志实现框架的配置文件。**
+
+### 2、遗留问题
+
+A系统（slf4j和logback）:Spring（commons-logging）、Hibernate（jboss-logging）、Mybatis、XXX 等等,
+
+如何让系统中所有的 日志都同一到slf4j？
+
+==1.将系统中其他日志框架先排除处处；==
+
+==2.用中间包来替换原有的日志框架；==
+
+==3.再导入slf4j其他的实现。==
+
+### 3、Spring Boot日志关系
+
+1）、Spring Boot的底层也是使用slf4j+logback进行日志记录；
+
+2）、SpringBoot 也把其他的日志都替换成了slf4J
+
+3）、中间替换包
+
+4）、如果引入其他的框架，一定要把这个框架的默认日志框架移除 。
+
+​		Spring 的默认日志框架：commons-logging也是进行移除。
+
+### 4、日志使用
+
+```java
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class ShangSpringBoot03LoggingApplicationTests {
+
+    Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Test
+    public void contextLoads() {
+        //设置日志的级别，从低到高：trace<debug<info<warn<error
+        //通过设置配置文件日志级别，显示当前级别和高级别的日志信息
+        logger.trace("trace日志");
+        logger.debug("debug日志");
+        logger.info("info日志");
+        logger.warn("warn日志");
+        logger.error("error日志");
+    }
+}
+```
+
+```properties
+logging.level.com.atguigu=trace
+#logging.level后面代表需要设置的包日志级别
+```

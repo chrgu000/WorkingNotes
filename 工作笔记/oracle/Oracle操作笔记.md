@@ -48,3 +48,11 @@ WHERE  s.type != 'BACKGROUND';
 
 或者反过来亦可。这样可以快速终止进程，释放资源。 
 
+
+
+## sql语句写法—As后的别名中有括号
+
+```mysql
+select 0 as "20条法则（元）" from dual;
+```
+
